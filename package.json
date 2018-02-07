@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "fingerprintjs2sync": "^1.5.5",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.0"
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2",
+    "redux-promise": "^0.5.3",
+    "socket.io-client": "^2.0.4",
+    "socket.io-react": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
