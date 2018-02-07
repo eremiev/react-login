@@ -22,7 +22,7 @@ export default class App extends Component {
 
         this.onListening = this.onListening.bind(this);
         this.onCheckUser = this.onCheckUser.bind(this);
-        this.onUpdate = this.onUpdate.bind(this);
+        this.onUpdateLoginResponse = this.onUpdateLoginResponse.bind(this);
     }
 
     componentDidMount() {
@@ -30,14 +30,13 @@ export default class App extends Component {
     }
 
     onListening() {
-
         socket.on("login", loginData => {
-            this.onUpdate(loginData.logged, loginData.user, loginData.userList);
+            this.onUpdateLoginResponse(loginData.logged, loginData.user, loginData.userList);
             this.onPerformLogin();
         });
     }
 
-    onUpdate(logged, user = null, userList = null) {
+    onUpdateLoginResponse(logged, user = null, userList = null) {
         this.setState({logged, user, userList});
     }
 
@@ -47,9 +46,9 @@ export default class App extends Component {
 
     onPerformLogin() {
         if (!this.state.logged) {
-           //create new user
+            //create new user
             socket.emit('performLogin', {deviceId: this.state.fPrint, username: this.state.username});
-        }else{
+        } else {
             //user already have acc.
             // console.log(this.state.user, this.state.userList);
         }
@@ -63,7 +62,7 @@ export default class App extends Component {
                     ?
                     <div>
                         <h1>Wellcome, {user.username}</h1>
-                    <p>Chat lists...</p>
+                        <p>Chat lists...</p>
                     </div>
                     :
                     <Login onInputChange={username => this.setState({username})} checkUser={this.onCheckUser}/>
