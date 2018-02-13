@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import socketIOClient from "socket.io-client";
 import Fingerprint2 from 'fingerprintjs2sync';
 
-import Login from '../login/login'
+import Login from '../login/login';
+import Main from '../main/main';
 import './App.css';
 
 const endpoint = "https://gentle-depths-77447.herokuapp.com/api/v1";
-const socket = socketIOClient(endpoint);
+export const socket = socketIOClient(endpoint);
 
 export default class App extends Component {
 
@@ -59,7 +60,6 @@ export default class App extends Component {
         }
     }
 
-
     onGetLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.onShowPosition, this.onShowError);
@@ -69,6 +69,7 @@ export default class App extends Component {
     }
 
     onShowPosition(position) {
+        console.log(position.coords.latitude);
         this.setState({lat: position.coords.latitude, lon: position.coords.longitude});
     }
 
@@ -90,17 +91,15 @@ export default class App extends Component {
     }
 
     render() {
-        const {logged, serverUser, lat, lon} = this.state;
+        const {logged, serverUser} = this.state;
         return (
             <div style={{textAlign: "center"}}>
-
 
                 {logged
                     ?
                     <div>
-                        <h1>Wellcome, {serverUser.username}</h1>
-                        <p>Your locations are: lat {lat ? lat : '...'} and lon {lon ? lon : '...'}</p>
-                        <p>Chat lists...</p>
+                        {/*<p>Your locations are: lat {lat ? lat : '...'} and lon {lon ? lon : '...'}</p>*/}
+                        <Main user={serverUser} lat={this.state.lat} lon={this.state.lon} deviceId={this.state.fPrint} />
                     </div>
                     :
                     <Login onInputChange={username => this.setState({username})} checkUser={this.onCheckUser}/>
