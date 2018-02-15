@@ -7,6 +7,7 @@ import Main from '../main/main';
 import './App.css';
 
 const endpoint = "https://gentle-depths-77447.herokuapp.com/api/v1";
+const develop = "http://localhost:4000/api/v1";
 export const socket = socketIOClient(endpoint);
 
 export default class App extends Component {
@@ -19,7 +20,7 @@ export default class App extends Component {
             fPrint: (new Fingerprint2()).getSync().fprint,
             lat: '',
             lon: '',
-            serverUserList: {},
+            roomInfo: {},
             serverUser: {}
         };
 
@@ -42,8 +43,8 @@ export default class App extends Component {
         });
     }
 
-    onUpdateLoginResponse(logged, serverUser = null, serverUserList = null) {
-        this.setState({logged, serverUser, serverUserList});
+    onUpdateLoginResponse(logged, serverUser = null, roomInfo = null) {
+        this.setState({logged, serverUser, roomInfo});
     }
 
     onCheckUser() {
@@ -56,7 +57,7 @@ export default class App extends Component {
             socket.emit('performLogin', {deviceId: this.state.fPrint, username: this.state.username});
         } else {
             //user already have acc.
-            // console.log(this.state.serverUser, this.state.serverUserList);
+            // console.log(this.state.serverUser, this.state.roomInfo);
         }
     }
 
@@ -69,7 +70,6 @@ export default class App extends Component {
     }
 
     onShowPosition(position) {
-        console.log(position.coords.latitude);
         this.setState({lat: position.coords.latitude, lon: position.coords.longitude});
     }
 
@@ -91,19 +91,27 @@ export default class App extends Component {
     }
 
     render() {
-        const {logged, serverUser} = this.state;
+        const {logged, serverUser, lat, lon} = this.state;
         return (
-            <div style={{textAlign: "center"}}>
+            <div className="container">
 
-                {logged
-                    ?
-                    <div>
-                        {/*<p>Your locations are: lat {lat ? lat : '...'} and lon {lon ? lon : '...'}</p>*/}
-                        <Main user={serverUser} lat={this.state.lat} lon={this.state.lon} deviceId={this.state.fPrint} />
-                    </div>
-                    :
-                    <Login onInputChange={username => this.setState({username})} checkUser={this.onCheckUser}/>
+                {
+                    lat ?
+                        logged
+                            ?
+                            <div className="row">
+                                <Main user={serverUser} lat={this.state.lat} lon={this.state.lon}/>
+                            </div>
+                            :
+                            <div className="row">
+                                <Login onInputChange={username => this.setState({username})} checkUser={this.onCheckUser}/>
+                            </div>
+
+                        :
+                        <div className="row"><div className="col-md-4 col-md-offset-4">Loading to connect with GPS...</div></div>
                 }
+
+
             </div>
         );
     }

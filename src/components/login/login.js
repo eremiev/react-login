@@ -30,12 +30,14 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className="col-md-4 col-md-offset-4">
                 <form onSubmit={this.onSubmit}>
-                    <input value={this.state.username} onChange={this.onInputChange} placeholder='Name'/>
-                    <span>
-                  <button>Submit</button>
-                    </span>
+                    <div className="input-group">
+                        <input className="form-control" value={this.state.username} onChange={this.onInputChange} placeholder='Name'/>
+                        <span className="input-group-btn">
+                            <button className="btn btn-primary">Submit</button>
+                             </span>
+                    </div>
                 </form>
             </div>
         );
