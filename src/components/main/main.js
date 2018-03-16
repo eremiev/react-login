@@ -44,7 +44,7 @@ export default class Main extends Component {
 
         return placesArrOrObj.map(el => {
             return (
-                <li className="list-item">{el.placeName} - {_.round(el.distanceFromYourPoint) / 1000} km</li>
+                <li className="list-item" key={el.placeName}>{el.placeName} - {_.round(el.distanceFromYourPoint) / 1000} km</li>
             );
         });
     }
